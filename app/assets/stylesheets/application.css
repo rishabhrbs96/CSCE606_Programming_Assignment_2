@@ -13,3 +13,8 @@
  *= require_tree .
  *= require_self
  */
+ 
+.hilite{
+    /* Yellow Orage colour background https://www.colorhexa.com/ffae42 */
+    background-color: #FFAE42;
+}

@@ -7,7 +7,12 @@ class MoviesController < ApplicationController
     end
   
     def index
-      @movies = Movie.all
+      # Apply sorting on column present in params[:sort] by using ActiveRecord::QueryMethods#order
+      # Reference: https://www.rubydoc.info/docs/rails/ActiveRecord%2FQueryMethods:order
+      @movies = Movie.all.order(params[:sort])
+      
+      # Update parameter to change the backgroung colour
+      @sort_column_header = params[:sort]
     end
   
     def new
