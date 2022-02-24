@@ -7,12 +7,36 @@ class MoviesController < ApplicationController
     end
   
     def index
+      # Part 1
       # Apply sorting on column present in params[:sort] by using ActiveRecord::QueryMethods#order
       # Reference: https://www.rubydoc.info/docs/rails/ActiveRecord%2FQueryMethods:order
-      @movies = Movie.all.order(params[:sort])
+      # @movies = Movie.all.order(params[:sort])
+      # # Update parameter to change the backgroung colour
+      # @sort_column_header = params[:sort]
       
-      # Update parameter to change the backgroung colour
-      @sort_column_header = params[:sort]
+      
+      # Part 2
+      # Getting all possible valuse of ratings field from the model
+      @all_ratings = Movie.ratings
+      
+      @movies = Movie.all
+      
+      if params[:sort] || params[:ratings] # Check any param is set
+        # Update parameter to change the backgroung colour of selected column
+        @sort_column_header = params[:sort]
+        
+        # Update parameter to filter on ratings
+        if params[:ratings]
+          # params[:ratings] will be a has so we will take its keys only
+          @ratings = params[:ratings].keys
+        else
+          # To handle case when the ratings filter was unchanged but 
+          # sort feature was used
+          @ratings = @all_ratings
+        end
+        
+        @movies = @movies.where("rating IN (?)", @ratings).order(params[:sort])
+      end
     end
   
     def new
